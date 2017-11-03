@@ -7,22 +7,18 @@ import java.util.ArrayList;
 /**
  * Created by Romain on 01/11/2017.
  */
-public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
-    private static final String SHOWS_SELECTOR = ".to-watch-list li";
-
-    private static final String SHOW_NAME_SELECTOR = "a";
-
+@SuppressWarnings("serial")
+public class TVTimeWatchlist extends TVTimeSimplifiedWatchlist {
     private static final String EPISODE_WRAPPER_SELECTOR = ".episode-details h2";
 
     private static final String EPISODE_SELECTOR = "a";
 
     private static final String REMAINING_EPISODES_SELECTOR = "span";
 
-    private TVTimePage page;
-
-    public TVTimeWatchlist(TVTimePage page) {
+    public TVTimeWatchlist(TVTimePage page, String tvstRemember) {
+    	super();
         for (Element el : page.getFields(SHOWS_SELECTOR)) {
-            if (el.id() != null) {
+            if (el.id() != "") {
                 String name = el.select(SHOW_NAME_SELECTOR).first().text();
                 String link = el.select(SHOW_NAME_SELECTOR).first().attr("href");
                 String[] linkParts = link.split("/");
@@ -31,17 +27,9 @@ public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
                 String episode = episodeWrapper.select(EPISODE_SELECTOR).first().text();
                 Boolean remainingEpisodes = !episodeWrapper.select(REMAINING_EPISODES_SELECTOR).isEmpty();
 
-                TVTimeShow show = new TVTimeShow(id, name, episode, remainingEpisodes);
+                TVTimeShow show = new TVTimeShow(id, name, episode, remainingEpisodes, tvstRemember);
                 add(show);
             }
         }
-    }
-
-    public TVTimePage getPage() {
-        return page;
-    }
-
-    public void setPage(TVTimePage page) {
-        this.page = page;
     }
 }

@@ -15,7 +15,7 @@ public class TVTimeShow {
 
     private static final String NUMBER_OF_SEASONS_SELECTOR = "#seasons .dropdown-menu li a";
 
-    private static final String FUTURE_EPISODES_SELECTOR = "li.future, li.current";
+    private static final String FUTURE_EPISODES_SELECTOR = "li";
 
     private static final String EPISODE_NUMBER_SELECTOR = ".episode-nb-label";
 
@@ -32,35 +32,36 @@ public class TVTimeShow {
     private String name;
 
     private Map<Integer, TVTimeSeason> seasons;
+    
+    private Map.Entry<Integer, Integer> nextEpisodeInfos;
+    
+    private String poster;
 
-    public TVTimeShow(String id, String name, String episode, Boolean remainingEpisodes) {
+    public TVTimeShow(String id, String name, String poster) {
+		this.id = id;
+		this.name = name;
+		this.poster = poster;
+	}
+
+	public TVTimeShow(String id, String name, String episode, Boolean remainingEpisodes, String tvstRemember) {
         this.id = id;
         this.name = name;
-        Map.Entry<Integer, Integer> nextEpisodeInfos = getNextEpisodeInfos(episode);
+        setNextEpisodeInfos(episode);
         if (!remainingEpisodes) {
-            buildSingleEpisodeSeason(nextEpisodeInfos);
+            buildSingleEpisodeSeason();
         } else {
-            buildSeasons(id, nextEpisodeInfos);
+            buildSeasons(id, tvstRemember);
         }
     }
 
-    private Map.Entry<Integer, Integer> getNextEpisodeInfos(String episodeString) {
-        String[] episodeParts = episodeString.split("E");
-
-        Integer season = Integer.valueOf(episodeParts[0].substring(1));
-        Integer episode = Integer.valueOf(episodeParts[1]);
-
-        return new AbstractMap.SimpleImmutableEntry<Integer, Integer>(season, episode);
-    }
-
-    private void buildSingleEpisodeSeason(Map.Entry<Integer, Integer> nextEpisodeInfos) {
+    private void buildSingleEpisodeSeason() {
         TVTimeSeason season = new TVTimeSeason();
         season.put(nextEpisodeInfos.getValue(), new TVTimeEpisode());
         addSeason(nextEpisodeInfos.getKey(), season);
     }
 
-    private void buildSeasons(String id, Map.Entry<Integer, Integer> nextEpisodeInfos) {
-        page = TVTimeAPI.getPageByUrl(URL_SHOW + id);
+    private void buildSeasons(String id, String tvstRemember) {
+        page = TVTimeAPI.getPageByUrl(URL_SHOW + id, tvstRemember);
         Integer numberOfSeasons = Integer.valueOf(page.getLastField(NUMBER_OF_SEASONS_SELECTOR).attr("data-season"));
         for (int s = nextEpisodeInfos.getKey(); s <= numberOfSeasons; s++) {
             buildSeason(s);
@@ -68,13 +69,16 @@ public class TVTimeShow {
     }
 
     private void buildSeason(Integer seasonNumber) {
-        Element seasonContent = page.getField("season" + seasonNumber + "-content");
+        Element seasonContent = page.getField("#season" + seasonNumber + "-content");
         TVTimeSeason season = new TVTimeSeason();
 
         for (Element el : seasonContent.select(FUTURE_EPISODES_SELECTOR)) {
-            Integer number = Integer.valueOf(el.select(EPISODE_NUMBER_SELECTOR).text());
-            season.put(number, buildEpisode(el));
+            Integer episodeNumber = Integer.valueOf(el.select(EPISODE_NUMBER_SELECTOR).text());
+            if (seasonNumber > getNextEpisodeInfos().getKey() || episodeNumber >= getNextEpisodeInfos().getValue()) {
+                season.put(episodeNumber, buildEpisode(el));
+            }
         }
+        addSeason(seasonNumber, season);
     }
 
     private TVTimeEpisode buildEpisode(Element el) {
@@ -126,4 +130,29 @@ public class TVTimeShow {
     public void setSeasons(Map<Integer, TVTimeSeason> seasons) {
         this.seasons = seasons;
     }
+
+    public Map.Entry<Integer, Integer> getNextEpisodeInfos() {
+		return nextEpisodeInfos;
+	}
+
+	public void setNextEpisodeInfos(Map.Entry<Integer, Integer> nextEpisodeInfos) {
+		this.nextEpisodeInfos = nextEpisodeInfos;
+	}
+
+	private void setNextEpisodeInfos(String episodeString) {
+        String[] episodeParts = episodeString.split("E");
+
+        Integer season = Integer.valueOf(episodeParts[0].substring(1));
+        Integer episode = Integer.valueOf(episodeParts[1]);
+
+        this.nextEpisodeInfos = new AbstractMap.SimpleImmutableEntry<Integer, Integer>(season, episode);
+    }
+
+	public String getPoster() {
+		return poster;
+	}
+
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
 }
