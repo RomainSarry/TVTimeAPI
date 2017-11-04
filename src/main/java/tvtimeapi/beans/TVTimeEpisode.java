@@ -10,12 +10,19 @@ public class TVTimeEpisode {
 
     private Date date;
 
+    private String downloadLinkPart;
+
     public TVTimeEpisode() {
     }
 
-    public TVTimeEpisode(String title, Date date) {
+    public TVTimeEpisode(String title, Date date, Integer seasonNumber, Integer episodeNumber) {
         this.title = title;
         this.date = date;
+        this.downloadLinkPart = generateDownloadLinkPart(seasonNumber, episodeNumber);
+    }
+
+    public String generateDownloadLinkPart(Integer seasonNumber, Integer episodeNumber) {
+        return "S" + String.format("%2d", seasonNumber).replace(' ', '0') + "E" + String.format("%2d", episodeNumber).replace(' ', '0');
     }
 
     public String getTitle() {
@@ -32,5 +39,13 @@ public class TVTimeEpisode {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDownloadLinkPart() {
+        return downloadLinkPart;
+    }
+
+    public void setDownloadLinkPart(String downloadLinkPart) {
+        this.downloadLinkPart = downloadLinkPart;
     }
 }

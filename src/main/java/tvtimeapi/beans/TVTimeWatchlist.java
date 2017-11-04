@@ -8,14 +8,20 @@ import java.util.ArrayList;
  * Created by Romain on 01/11/2017.
  */
 @SuppressWarnings("serial")
-public class TVTimeWatchlist extends TVTimeSimplifiedWatchlist {
-    private static final String EPISODE_WRAPPER_SELECTOR = ".episode-details h2";
+public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
+    protected static final String SHOWS_SELECTOR = ".to-watch-list li";
 
-    private static final String EPISODE_SELECTOR = "a";
+    protected static final String SHOW_NAME_SELECTOR = ".episode-details .nb-reviews-link";
 
-    private static final String REMAINING_EPISODES_SELECTOR = "span";
+    protected static final String POSTER_SELECTOR = "img";
 
-    public TVTimeWatchlist(TVTimePage page, String tvstRemember) {
+    protected static final String EPISODE_WRAPPER_SELECTOR = ".episode-details h2";
+
+    protected static final String EPISODE_SELECTOR = "a";
+
+    protected static final String REMAINING_EPISODES_SELECTOR = "span";
+
+    public TVTimeWatchlist(TVTimePage page) {
     	super();
         for (Element el : page.getFields(SHOWS_SELECTOR)) {
             if (el.id() != "") {
@@ -26,8 +32,9 @@ public class TVTimeWatchlist extends TVTimeSimplifiedWatchlist {
                 Element episodeWrapper = el.select(EPISODE_WRAPPER_SELECTOR).first();
                 String episode = episodeWrapper.select(EPISODE_SELECTOR).first().text();
                 Boolean remainingEpisodes = !episodeWrapper.select(REMAINING_EPISODES_SELECTOR).isEmpty();
+                String poster = el.select(POSTER_SELECTOR).first().attr("src");
 
-                TVTimeShow show = new TVTimeShow(id, name, episode, remainingEpisodes, tvstRemember);
+                TVTimeShow show = new TVTimeShow(id, name, episode, remainingEpisodes, poster, link);
                 add(show);
             }
         }
