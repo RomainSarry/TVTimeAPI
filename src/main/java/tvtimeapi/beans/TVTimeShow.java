@@ -72,20 +72,20 @@ public class TVTimeShow {
 
     private void buildSeason(Integer seasonNumber) {
         Element seasonContent = page.getField("#season" + seasonNumber + "-content");
-        TVTimeSeason season = new TVTimeSeason();
+        TVTimeSeason season = new TVTimeSeason(seasonNumber);
 
         for (Element el : seasonContent.select(FUTURE_EPISODES_SELECTOR)) {
             if (!el.hasClass("future")) {
                 Integer episodeNumber = Integer.valueOf(el.select(EPISODE_NUMBER_SELECTOR).text());
                 if (seasonNumber > getNextEpisodeInfos().getKey() || episodeNumber >= getNextEpisodeInfos().getValue()) {
-                    season.put(episodeNumber, buildEpisode(seasonNumber, episodeNumber, el));
+                    season.addEpisode(episodeNumber, buildEpisode(episodeNumber, el));
                 }
             }
         }
         addSeason(seasonNumber, season);
     }
 
-    private TVTimeEpisode buildEpisode(Integer seasonNumber, Integer episodeNumber, Element el) {
+    private TVTimeEpisode buildEpisode(Integer episodeNumber, Element el) {
         String title = el.select(EPISODE_TITLE_SELECTOR).text();
         Date date;
         try {
@@ -93,7 +93,7 @@ public class TVTimeShow {
         } catch (ParseException e) {
             date = null;
         }
-        return new TVTimeEpisode(title, date, seasonNumber, episodeNumber);
+        return new TVTimeEpisode(title, date, episodeNumber);
     }
 
     public TVTimePage getPage() {

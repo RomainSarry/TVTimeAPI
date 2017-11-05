@@ -15,14 +15,14 @@ public class TVTimeEpisode {
     public TVTimeEpisode() {
     }
 
-    public TVTimeEpisode(String title, Date date, Integer seasonNumber, Integer episodeNumber) {
+    public TVTimeEpisode(String title, Date date, Integer episodeNumber) {
         this.title = title;
         this.date = date;
-        this.downloadLinkPart = generateDownloadLinkPart(seasonNumber, episodeNumber);
+        this.downloadLinkPart = generateDownloadLinkPart(episodeNumber);
     }
 
-    public String generateDownloadLinkPart(Integer seasonNumber, Integer episodeNumber) {
-        return "S" + String.format("%2d", seasonNumber).replace(' ', '0') + "E" + String.format("%2d", episodeNumber).replace(' ', '0');
+    private String generateDownloadLinkPart(Integer episodeNumber) {
+        return "E" + String.format("%2d", episodeNumber).replace(' ', '0');
     }
 
     public String getTitle() {
