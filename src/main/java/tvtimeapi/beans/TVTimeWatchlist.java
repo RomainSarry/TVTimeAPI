@@ -21,6 +21,9 @@ public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
 
     protected static final String REMAINING_EPISODES_SELECTOR = "span";
 
+    public TVTimeWatchlist() {
+    }
+
     public TVTimeWatchlist(TVTimePage page) {
     	super();
         for (Element el : page.getFields(SHOWS_SELECTOR)) {
