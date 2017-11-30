@@ -1,6 +1,7 @@
 package tvtimeapi.beans;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
@@ -34,13 +35,20 @@ public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
 				String id = linkParts[linkParts.length - 1];
 				Element episodeWrapper = el.select(EPISODE_WRAPPER_SELECTOR).first();
 				String episode = episodeWrapper.select(EPISODE_SELECTOR).first().text();
-				Integer remainingEpisodes = Integer
-						.valueOf(episodeWrapper.select(REMAINING_EPISODES_SELECTOR).first().text());
+				Integer remainingEpisodes = getRemainingEpisodes(episodeWrapper.select(REMAINING_EPISODES_SELECTOR));
 				String poster = el.select(POSTER_SELECTOR).first().attr("src");
 
 				TVTimeShow show = new TVTimeShow(id, name, episode, remainingEpisodes, poster, link);
 				add(show);
 			}
 		}
+	}
+
+	private Integer getRemainingEpisodes(Elements remainingEpisodesElements) {
+		if (remainingEpisodesElements == null) {
+			return 1;
+		}
+		String remainingEpisodesString = remainingEpisodesElements.first().text();
+		return Integer.valueOf(remainingEpisodesString.split(" ")[1]) + 1;
 	}
 }
