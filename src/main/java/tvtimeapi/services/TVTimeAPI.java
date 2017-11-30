@@ -30,7 +30,7 @@ public class TVTimeAPI {
         return new TVTimeWatchlist(getPageByUrl(URL_BASE, tvstRemember));
     }
 
-    public TVTimeShow getShow(String id, String name, String episode, Boolean remainingEpisodes, String poster, String link, String tvstRemember) {
+    public TVTimeShow getShow(String id, String name, String episode, Integer remainingEpisodes, String poster, String link, String tvstRemember) {
         return new TVTimeShow(id, name, episode, remainingEpisodes, poster, link, tvstRemember);
     }
 }

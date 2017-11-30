@@ -33,6 +33,13 @@ public class TVTimeSeason {
     public void setEpisodes(Map<Integer, TVTimeEpisode> episodes) {
         this.episodes = episodes;
     }
+    
+    public Boolean hasEpisodes() {
+    	if (episodes == null) {
+    		return false;
+    	}
+    	return !episodes.isEmpty();
+    }
 
     public String getDownloadLinkPart() {
         return downloadLinkPart;

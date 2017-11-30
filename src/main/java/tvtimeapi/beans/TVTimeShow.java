@@ -38,7 +38,7 @@ public class TVTimeShow {
     
     private Map.Entry<Integer, Integer> nextEpisodeInfos;
 
-    private Boolean remainingEpisodes;
+    private Integer remainingEpisodes;
     
     private String poster;
 
@@ -46,12 +46,12 @@ public class TVTimeShow {
 
     private String link;
 
-	public TVTimeShow(String id, String name, String episode, Boolean remainingEpisodes, String poster, String link, String tvstRemember) {
+	public TVTimeShow(String id, String name, String episode, Integer remainingEpisodes, String poster, String link, String tvstRemember) {
         this(id, name, episode, remainingEpisodes, poster, link);
         buildSeasons(tvstRemember);
     }
 
-    public TVTimeShow(String id, String name, String episode, Boolean remainingEpisodes, String poster, String link) {
+    public TVTimeShow(String id, String name, String episode, Integer remainingEpisodes, String poster, String link) {
         this.id = id;
         this.name = name;
         this.episode = episode;
@@ -168,11 +168,15 @@ public class TVTimeShow {
 		this.poster = poster;
 	}
 
-    public Boolean getRemainingEpisodes() {
-        return remainingEpisodes;
+    public Boolean hasRemainingEpisodes() {
+        return remainingEpisodes > 0;
+    }
+    
+    public Integer getRemainingEpisodes() {
+    	return remainingEpisodes;
     }
 
-    public void setRemainingEpisodes(Boolean remainingEpisodes) {
+    public void setRemainingEpisodes(Integer remainingEpisodes) {
         this.remainingEpisodes = remainingEpisodes;
     }
 
