@@ -45,7 +45,7 @@ public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
 	}
 
 	private Integer getRemainingEpisodes(Elements remainingEpisodesElements) {
-		if (remainingEpisodesElements == null) {
+		if (remainingEpisodesElements == null || remainingEpisodesElements.isEmpty()) {
 			return 1;
 		}
 		String remainingEpisodesString = remainingEpisodesElements.first().text();
