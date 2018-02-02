@@ -61,7 +61,7 @@ public class TVTimeShow {
         setNextEpisodeInfos(episode);
     }
 
-    private void buildSeasons(String tvstRemember) {
+    public void buildSeasons(String tvstRemember) {
         page = TVTimeAPI.getPageByUrl(TVTimeAPI.URL_BASE + link, tvstRemember);
         banner = page.getField(BANNER_SELECTOR).attr("src");
         Integer numberOfSeasons = Integer.valueOf(page.getLastField(NUMBER_OF_SEASONS_SELECTOR).attr("data-season"));
