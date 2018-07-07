@@ -21,7 +21,7 @@ public class TVTimeAPI {
         Document htmlDom = null;
 
         try {
-            htmlDom = Jsoup.connect(url).cookie("tvstRemember", tvstRemember).get();
+            htmlDom = Jsoup.connect(url).followRedirects(true).cookie("tvstRemember", tvstRemember).get();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
