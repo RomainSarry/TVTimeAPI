@@ -6,6 +6,6 @@ Java API for the TVTime website
 <dependency>
     <groupId>com.sarryromain</groupId>
     <artifactId>tvtime-api</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 </dependency>
 ```
