@@ -1,7 +1,5 @@
 package tvtimeapi.beans;
 
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 
 /**
@@ -13,11 +11,5 @@ public class TVTimeWatchlist extends ArrayList<TVTimeShow> {
 
 	public static final String SHOW_NAME_SELECTOR = ".episode-details .nb-reviews-link";
 
-	public static final String POSTER_SELECTOR = "img";
-
-	public static final String EPISODE_WRAPPER_SELECTOR = ".episode-details h2";
-
-	public static final String EPISODE_SELECTOR = "a";
-
-	public static final String REMAINING_EPISODES_SELECTOR = "span";
+	public static final String NEXT_EPISODE_SELECTOR = ".episode-details h2 a";
 }

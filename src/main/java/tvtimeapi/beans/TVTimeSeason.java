@@ -7,45 +7,53 @@ import java.util.Map;
  * Created by Romain on 01/11/2017.
  */
 public class TVTimeSeason {
-    private Map<Integer, TVTimeEpisode> episodes;
+	public static final String EPISODES_SELECTOR = "li";
 
-    private String downloadLinkPart;
+	private Map<Integer, TVTimeEpisode> episodes;
 
-    public TVTimeSeason(Integer seasonNumber) {
-        this.downloadLinkPart = generateLinkPart(seasonNumber);
-    }
+	private String downloadLinkPart;
 
-    public String generateLinkPart(Integer seasonNumber) {
-        return "S" + String.format("%2d", seasonNumber).replace(' ', '0');
-    }
+	public TVTimeSeason(Integer seasonNumber) {
+//		for (Element el : seasonContent.select(FUTURE_EPISODES_SELECTOR)) {
+//			Integer episodeNumber = Integer.valueOf(el.select(EPISODE_NUMBER_SELECTOR).text());
+//			addEpisode(episodeNumber, buildEpisode(episodeNumber, el));
+//		}
 
-    public void addEpisode(Integer episodeNumber, TVTimeEpisode episode) {
-        if (episodes == null) {
-            episodes = new HashMap<Integer, TVTimeEpisode>();
-        }
-        episodes.put(episodeNumber, episode);
-    }
+//		for (Element el : seasonContent.select(FUTURE_EPISODES_SELECTOR)) {
+//			if (!el.hasClass("future")) {
+//				Integer episodeNumber = Integer.valueOf(el.select(EPISODE_NUMBER_SELECTOR).text());
+//				if (seasonNumber > nextEpisodeInfos.getKey() || episodeNumber >= nextEpisodeInfos.getValue()) {
+//					addEpisode(episodeNumber, buildEpisode(episodeNumber, el));
+//				}
+//			}
+//		}
+		
+		downloadLinkPart = "S" + String.format("%2d", seasonNumber).replace(' ', '0');
+	}
 
-    public Map<Integer, TVTimeEpisode> getEpisodes() {
-        return episodes;
-    }
+	public void addEpisode(Integer episodeNumber, TVTimeEpisode episode) {
+		if (episodes == null) {
+			episodes = new HashMap<Integer, TVTimeEpisode>();
+		}
+		episodes.put(episodeNumber, episode);
+	}
 
-    public void setEpisodes(Map<Integer, TVTimeEpisode> episodes) {
-        this.episodes = episodes;
-    }
-    
-    public Boolean hasEpisodes() {
-    	if (episodes == null) {
-    		return false;
-    	}
-    	return !episodes.isEmpty();
-    }
+	public Map<Integer, TVTimeEpisode> getEpisodes() {
+		return episodes;
+	}
 
-    public String getDownloadLinkPart() {
-        return downloadLinkPart;
-    }
+	public void setEpisodes(Map<Integer, TVTimeEpisode> episodes) {
+		this.episodes = episodes;
+	}
 
-    public void setDownloadLinkPart(String downloadLinkPart) {
-        this.downloadLinkPart = downloadLinkPart;
-    }
+	public Boolean hasEpisodes() {
+		if (episodes == null) {
+			return false;
+		}
+		return !episodes.isEmpty();
+	}
+
+	public String getDownloadLinkPart() {
+		return downloadLinkPart;
+	}
 }
