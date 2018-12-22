@@ -1,40 +1,22 @@
 package tvtimeapi.services;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpCookie;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
+import tvtimeapi.beans.*;
+import tvtimeapi.exceptions.*;
 
-import tvtimeapi.beans.TVTimeEpisode;
-import tvtimeapi.beans.TVTimePage;
-import tvtimeapi.beans.TVTimeSeason;
-import tvtimeapi.beans.TVTimeShow;
-import tvtimeapi.beans.TVTimeWatchlist;
-import tvtimeapi.exceptions.TVTimeEpisodeFetchingException;
-import tvtimeapi.exceptions.TVTimeLoginException;
-import tvtimeapi.exceptions.TVTimeSeasonFetchingException;
-import tvtimeapi.exceptions.TVTimeURLException;
-import tvtimeapi.exceptions.TVTimeWatchlistFetchingException;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.*;
 
 /**
  * Created by Romain on 01/11/2017.
@@ -53,10 +35,14 @@ public class TVTimeAPI {
 			throws TVTimeURLException, TVTimeLoginException {
 		this.urlString = urlString == null ? "https://www.tvtime.com" : urlString;
 
+		if (username == null || password == null) {
+			throw new TVTimeLoginException(username);
+		}
+
 		try {
 			CookieManager cookieManager = new CookieManager();
 			CookieHandler.setDefault(cookieManager);
-			URL url = new URL(urlString + "/signin");
+			URL url = new URL(this.urlString + "/signin");
 
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
@@ -80,7 +66,7 @@ public class TVTimeAPI {
 				}
 			}
 		} catch (IOException e) {
-			throw new TVTimeURLException(urlString);
+			throw new TVTimeURLException(this.urlString);
 		}
 
 		if (tvstRemember == null) {
