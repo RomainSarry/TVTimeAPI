@@ -1,62 +1,39 @@
 package tvtimeapi.beans;
 
-import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Romain on 01/11/2017.
  */
 public class TVTimeShow {
-	public static final String NUMBER_OF_SEASONS_SELECTOR = "#seasons .dropdown-menu li a";
-
-	public static final String BANNER_SELECTOR = ".banner-image img";
-
-	public static final String SHOW_NAME_SELECTOR = "#top-banner h1";
-	
-	public static final String NEXT_SEASON_NUMBER_SELECTOR = "#seasons .dropdown-menu .active a";
-	
-	public static final String NEXT_EPISODE_NUMBER_SELECTOR = ".episode-list .current a";
-
-	private TVTimePage page;
-
-	private String id;
+	private Integer id;
 
 	private String name;
 
-	private Map<Integer, TVTimeSeason> seasons;
+	private String overview;
 
-	private Map.Entry<Integer, Integer> nextEpisode;
+	private List<TVTimeEpisode> episodes;
+
+	private TVTimeEpisode nextEpisode;
 
 	private String banner;
 
-	private String link;
+	private String poster;
 
-	public TVTimeShow(TVTimePage page, String id, String name, Map.Entry<Integer, Integer> nextEpisode, String link, String banner) {
-		this(id, name, nextEpisode, link);
-		this.page = page;
-		this.banner = banner;
-	}
+	@JsonProperty("aired_episodes")
+	private Integer airedEpisodes;
 
-	public TVTimeShow(String id, String name, Map.Entry<Integer, Integer> nextEpisode, String link) {
-		this.id = id;
-		this.name = name;
-		this.link = link;
-		this.nextEpisode = nextEpisode;
-	}
+	@JsonProperty("seen_episodes")
+	private Integer seenEpisodes;
 
-	public TVTimePage getPage() {
-		return page;
-	}
-
-	public void setPage(TVTimePage page) {
-		this.page = page;
-	}
-
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -68,26 +45,27 @@ public class TVTimeShow {
 		this.name = name;
 	}
 
-	public void addSeason(Integer number, TVTimeSeason season) {
-		if (this.seasons == null) {
-			this.seasons = new HashMap<Integer, TVTimeSeason>();
-		}
-		this.seasons.put(number, season);
+	public String getOverview() {
+		return overview;
 	}
 
-	public Map<Integer, TVTimeSeason> getSeasons() {
-		return seasons;
+	public void setOverview(String overview) {
+		this.overview = overview;
 	}
 
-	public void setSeasons(Map<Integer, TVTimeSeason> seasons) {
-		this.seasons = seasons;
+	public List<TVTimeEpisode> getEpisodes() {
+		return episodes;
 	}
 
-	public Map.Entry<Integer, Integer> getNextEpisode() {
+	public void setEpisodes(List<TVTimeEpisode> episodes) {
+		this.episodes = episodes;
+	}
+
+	public TVTimeEpisode getNextEpisode() {
 		return nextEpisode;
 	}
 
-	public void setNextEpisode(Map.Entry<Integer, Integer> nextEpisode) {
+	public void setNextEpisode(TVTimeEpisode nextEpisode) {
 		this.nextEpisode = nextEpisode;
 	}
 
@@ -99,11 +77,38 @@ public class TVTimeShow {
 		this.banner = banner;
 	}
 
-	public String getLink() {
-		return link;
+	public String getPoster() {
+		return poster;
 	}
 
-	public void setLink(String link) {
-		this.link = link;
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
+
+	@JsonProperty("images")
+	private void setImages(Map<String, Object> images) {
+		this.banner = ((List<String>) images.get("banner")).get(0);
+		this.poster = ((Map<String, String>) images.get("poster")).get("0");
+	}
+
+	@JsonProperty("all_images")
+	private void setAllImages(Map<String, Object> images) {
+		setImages(images);
+	}
+
+	public Integer getAiredEpisodes() {
+		return airedEpisodes;
+	}
+
+	public void setAiredEpisodes(Integer airedEpisodes) {
+		this.airedEpisodes = airedEpisodes;
+	}
+
+	public Integer getSeenEpisodes() {
+		return seenEpisodes;
+	}
+
+	public void setSeenEpisodes(Integer seenEpisodes) {
+		this.seenEpisodes = seenEpisodes;
 	}
 }

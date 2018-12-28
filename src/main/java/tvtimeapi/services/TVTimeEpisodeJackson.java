@@ -1,27 +1,37 @@
-package tvtimeapi.beans;
+package tvtimeapi.services;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import tvtimeapi.beans.TVTimeShow;
 
 import java.util.Date;
 
 /**
- * Created by Romain on 01/11/2017.
+ * Created by Romain on 27/12/2018.
  */
-public class TVTimeEpisode {
+class TVTimeEpisodeJackson {
+    private String result;
+
     private Integer id;
 
     private String name;
+
+    @JsonProperty("air_date")
+    private Date date;
 
     @JsonProperty("season_number")
     private Integer season;
 
     private Integer number;
 
-    @JsonProperty("air_date")
-    private Date date;
+    private TVTimeShow show;
 
-    @JsonProperty("seen")
-    private Boolean watched;
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
 
     public Integer getId() {
         return id;
@@ -37,6 +47,14 @@ public class TVTimeEpisode {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getSeason() {
@@ -55,19 +73,11 @@ public class TVTimeEpisode {
         this.number = number;
     }
 
-    public Date getDate() {
-        return date;
+    public TVTimeShow getShow() {
+        return show;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Boolean getWatched() {
-        return watched;
-    }
-
-    public void setWatched(Boolean watched) {
-        this.watched = watched;
+    public void setShow(TVTimeShow show) {
+        this.show = show;
     }
 }

@@ -8,6 +8,6 @@ public class TVTimeWatchlistFetchingException extends TVTimeAPIException {
 	private static final long serialVersionUID = 1L;
 
     public TVTimeWatchlistFetchingException() {
-        super("Error reading watchlist");
+        super("Error fetching watchlist");
     }
 }
