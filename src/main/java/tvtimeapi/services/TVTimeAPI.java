@@ -87,7 +87,7 @@ public class TVTimeAPI {
 	private TVTimeShow getShow(Map<String, String> parameters, Boolean includeEpisodes) throws TVTimeGetException, TVTimeParametersException {
 		parameters.put("include_episodes", String.valueOf(includeEpisodes ? 1 : 0));
 		TVTimeShow show = getRequest(urlString + "/show?" + getParamsAsString(parameters), TVTimeShowJackson.class).getShow();
-		show.setEpisodes(show.getEpisodes().stream().filter(e -> !e.getWatched()).collect(Collectors.toList()));
+		show.setEpisodes(show.getEpisodes().stream().filter(e -> !e.getWatched() && e.getDate() != null && !e.getDate().after(new Date())).collect(Collectors.toList()));
 		return show;
 	}
 
